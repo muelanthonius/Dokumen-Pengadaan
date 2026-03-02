@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generator Berita Acara Pengadaan</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">BA</div>
+  <div>
+    <h1>Generator Berita Acara Pengadaan</h1>
+    <p>Dokumen Baku · Unit Pengadaan</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Jenis Dokumen -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Jenis Dokumen</span>
+    </div>
+    <div class="section-body">
+      <div class="type-selector">
+        <label class="type-card active" id="card-pembukaan">
+          <input type="radio" name="jenis" value="pembukaan" checked onchange="switchType(this.value)">
+          <div class="label">Tipe 01</div>
+          <div class="title">Berita Acara Pembukaan Dokumen</div>
+        </label>
+        <label class="type-card" id="card-aanwijzing">
+          <input type="radio" name="jenis" value="aanwijzing" onchange="switchType(this.value)">
+          <div class="label">Tipe 02</div>
+          <div class="title">Berita Acara Aanwijzing</div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Umum Pekerjaan -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Data Umum Pekerjaan</span>
+    </div>
+    <div class="section-body">
+      <div class="form-row full">
+        <div class="field">
+          <label>Nama Pekerjaan</label>
+          <input type="text" id="nama_pekerjaan" placeholder="Masukkan nama pekerjaan...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Nomor Pengadaan</label>
+          <input type="text" id="nomor_pengadaan" placeholder="Nomor pengadaan">
+        </div>
+        <div class="field">
+          <label>Metode Pengadaan</label>
+          <select id="metode_pengadaan">
+            <option value="">-- Pilih Metode --</option>
+            <option value="Penunjukan Langsung">Penunjukan Langsung</option>
+            <option value="Tender/Seleksi Terbatas">Tender/Seleksi Terbatas</option>
+            <option value="Tender/Seleksi">Tender/Seleksi</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row triple">
+        <div class="field">
+          <label>Hari</label>
+          <input type="text" id="hari" placeholder="Senin, Selasa, ...">
+        </div>
+        <div class="field">
+          <label>Tanggal</label>
+          <input type="date" id="tanggal">
+        </div>
+        <div class="field">
+          <label>Lokasi</label>
+          <input type="text" id="lokasi" placeholder="Lokasi pelaksanaan">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nama Peserta -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Nama Peserta</span>
+    </div>
+    <div class="section-body">
+      <div id="peserta-list">
+        <div class="list-item">
+          <span class="list-num">1.</span>
+          <input type="text" placeholder="Nama peserta / perusahaan...">
+          <button class="btn-icon" onclick="removePeserta(this)" title="Hapus">&#215;</button>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addPeserta()">+ Tambah Peserta</button>
+    </div>
+  </div>
+
+  <!-- Pertanyaan & Jawaban (Aanwijzing only) -->
+  <div class="section hidden" id="section-qa">
+    <div class="section-header">
+      <span class="section-title">Pertanyaan &amp; Jawaban</span>
+    </div>
+    <div class="section-body">
+      <div id="qa-list"></div>
+      <button class="btn-add" onclick="addQA()">+ Tambah Pertanyaan &amp; Jawaban</button>
+    </div>
+  </div>
+
+  <!-- Perubahan Dokumen (Aanwijzing only) -->
+  <div class="section hidden" id="section-perubahan">
+    <div class="section-header">
+      <span class="section-title">Perubahan Dokumen</span>
+    </div>
+    <div class="section-body">
+      <div id="perubahan-list"></div>
+      <button class="btn-add" onclick="addPerubahan()">+ Tambah Perubahan</button>
+    </div>
+  </div>
+
+  <!-- Tanda Tangan -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Tanda Tangan</span>
+    </div>
+    <div class="section-body">
+      <div class="ttd-grid">
+
+        <!-- Unit Kerja Pengadaan -->
+        <div class="ttd-box">
+          <div class="ttd-box-header">Unit Kerja Pengadaan</div>
+          <div class="ttd-box-body">
+            <div style="margin-bottom:10px;">
+              <div style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
+                Asdep Pelaksanaan Pengadaan
+              </div>
+              <div class="ttd-fixed">
+                <div class="name">Jessica Puspadayasari</div>
+                <div class="jabatan">Asdep Pelaksanaan Pengadaan</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
+                Pelaksana Pengadaan
+              </div>
+              <div class="field" style="margin-bottom:8px;">
+                <label>Nama</label>
+                <input type="text" id="pelaksana_nama" placeholder="Nama pelaksana pengadaan">
+              </div>
+              <div class="field">
+                <label>Jabatan</label>
+                <input type="text" id="pelaksana_jabatan" placeholder="Jabatan">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit Kerja Pengguna -->
+        <div class="ttd-box">
+          <div class="ttd-box-header" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>Unit Kerja Pengguna</span>
+            <button class="btn-icon" onclick="addPengguna()" title="Tambah pengguna" style="font-size:16px;color:var(--accent)">+</button>
+          </div>
+          <div class="ttd-box-body">
+            <div id="pengguna-list"></div>
+            <button class="btn-add" onclick="addPengguna()">+ Tambah Unit Pengguna</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="generate-wrap">
+    <button class="btn-preview" onclick="showPreview()">&#128269; Preview</button>
+    <button class="btn-generate" onclick="generatePDF()">&#8595; Unduh PDF</button>
+  </div>
+
+</div>
+
+<!-- Preview Modal -->
+<div class="modal-overlay hidden" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Preview Dokumen</h2>
+      <button class="modal-close" onclick="closeModal()">&#215;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
