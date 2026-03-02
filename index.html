@@ -67,7 +67,7 @@
           </select>
         </div>
       </div>
-      <div class="form-row triple">
+      <div class="form-row" style="grid-template-columns:1fr 1fr 1fr 1fr;">
         <div class="field">
           <label>Hari</label>
           <input type="text" id="hari" placeholder="Senin, Selasa, ...">
@@ -75,6 +75,10 @@
         <div class="field">
           <label>Tanggal</label>
           <input type="date" id="tanggal">
+        </div>
+        <div class="field">
+          <label>Jam (HH:MM)</label>
+          <input type="time" id="jam" placeholder="09:00">
         </div>
         <div class="field">
           <label>Lokasi</label>
@@ -131,44 +135,29 @@
     <div class="section-body">
       <div class="ttd-grid">
 
-        <!-- Unit Kerja Pengadaan -->
+        <!-- Mengetahui: Jessica Puspadayasari (fixed) -->
         <div class="ttd-box">
-          <div class="ttd-box-header">Unit Kerja Pengadaan</div>
+          <div class="ttd-box-header">Mengetahui</div>
           <div class="ttd-box-body">
-            <div style="margin-bottom:10px;">
-              <div style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
-                Asdep Pelaksanaan Pengadaan
-              </div>
-              <div class="ttd-fixed">
-                <div class="name">Jessica Puspadayasari</div>
-                <div class="jabatan">Asdep Pelaksanaan Pengadaan</div>
-              </div>
-            </div>
-            <div>
-              <div style="font-size:11px;font-family:var(--mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">
-                Pelaksana Pengadaan
-              </div>
-              <div class="field" style="margin-bottom:8px;">
-                <label>Nama</label>
-                <input type="text" id="pelaksana_nama" placeholder="Nama pelaksana pengadaan">
-              </div>
-              <div class="field">
-                <label>Jabatan</label>
-                <input type="text" id="pelaksana_jabatan" placeholder="Jabatan">
-              </div>
+            <div class="ttd-fixed">
+              <div class="name">Jessica Puspadayasari</div>
+              <div class="jabatan">Asdep Pelaksanaan Pengadaan</div>
             </div>
           </div>
         </div>
 
-        <!-- Unit Kerja Pengguna -->
+        <!-- Yang Membuat: Pelaksana Pengadaan (form) -->
         <div class="ttd-box">
-          <div class="ttd-box-header" style="display:flex;align-items:center;justify-content:space-between;">
-            <span>Unit Kerja Pengguna</span>
-            <button class="btn-icon" onclick="addPengguna()" title="Tambah pengguna" style="font-size:16px;color:var(--accent)">+</button>
-          </div>
+          <div class="ttd-box-header">Yang Membuat</div>
           <div class="ttd-box-body">
-            <div id="pengguna-list"></div>
-            <button class="btn-add" onclick="addPengguna()">+ Tambah Unit Pengguna</button>
+            <div class="field" style="margin-bottom:8px;">
+              <label>Nama Pelaksana Pengadaan</label>
+              <input type="text" id="pelaksana_nama" placeholder="Nama pelaksana pengadaan">
+            </div>
+            <div class="field">
+              <label>Jabatan</label>
+              <input type="text" id="pelaksana_jabatan" placeholder="Jabatan">
+            </div>
           </div>
         </div>
 
