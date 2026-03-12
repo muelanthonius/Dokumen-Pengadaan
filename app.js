@@ -229,13 +229,14 @@ function buildPreviewHTML(data) {
 
     return `<div class="preview-doc">
       <h2>BERITA ACARA PEMBUKAAN DOKUMEN PENAWARAN</h2>
+      <h2>${data.nama_pekerjaan || '...'}</h2>
       <p class="nomor">Nomor: ${data.nomor_pengadaan || '...'}</p>
 
       <p>Pada hari ini, <b>${data.hari || '...'}</b>, tanggal <b>${data.tanggal || '...'}</b>,
       pukul <b>${data.jam || '...'}</b>, bertempat di <b>${data.lokasi || '...'}</b>,
       telah dilaksanakan Pembukaan Dokumen Penawaran.</p>
 
-      <p style="margin-top:10px">Bidang Pelaksanaan Pengadaan BPJS Ketenagakerjaan telah mengadakan kegiatan pemasukan
+      <p style="margin-top:10px;text-align:justify">Bidang Pelaksanaan Pengadaan BPJS Ketenagakerjaan telah mengadakan kegiatan pemasukan
       dan pembukaan dokumen penawaran pekerjaan <b>${data.nama_pekerjaan || '...'}</b>
       yang diproses dengan metode <b>${data.metode || '...'}</b>.</p>
 
@@ -348,13 +349,13 @@ async function generatePDF() {
 
   // ── Document Header ──
   doc.setFontSize(14);
-  doc.setFont('times', 'bold');
+  doc.setFont('helvetica', 'bold');
   const judul = isAan ? 'BERITA ACARA AANWIJZING' : 'BERITA ACARA PEMBUKAAN DOKUMEN PENAWARAN';
   doc.text(judul, pageW / 2, y, { align: 'center' });
   y += 7;
 
   doc.setFontSize(11);
-  doc.setFont('times', 'normal');
+  doc.setFont('helvetica', 'normal');
   doc.text(`Nomor: ${data.nomor_pengadaan || ''}`, pageW / 2, y, { align: 'center' });
   y += 10;
 
@@ -369,7 +370,7 @@ async function generatePDF() {
     // BA PEMBUKAAN DOKUMEN
     // ════════════════════════════════════════
 
-    doc.setFont('times', 'normal');
+    doc.setFont('helvetica', 'normal');
 
     // Paragraf 1
     printWrapped(
@@ -474,7 +475,7 @@ async function generatePDF() {
     // BA AANWIJZING
     // ════════════════════════════════════════
 
-    doc.setFont('times', 'normal');
+    doc.setFont('helvetica', 'normal');
     printWrapped(
       `Pada hari ini, ${data.hari || '...'}, tanggal ${data.tanggal || '...'}, pukul ${data.jam || '...'}, bertempat di ${data.lokasi || '...'}, telah dilaksanakan Rapat Aanwijzing (Pemberian Penjelasan) untuk pekerjaan:`,
       marginL, contentW
@@ -488,7 +489,7 @@ async function generatePDF() {
       ['Metode Pengadaan', data.metode          || '-'],
     ].forEach(([label, val]) => {
       checkPage(7);
-      doc.setFont('times', 'normal');
+      doc.setFont('helvetica', 'normal');
       doc.text(label, marginL + 4, y);
       doc.text(':', marginL + col1, y);
       doc.splitTextToSize(val, contentW - col1 - col2 - 4).forEach((vl, vi) => {
@@ -500,10 +501,10 @@ async function generatePDF() {
     y += 4;
 
     // Peserta
-    doc.setFont('times', 'bold');
+    doc.setFont('helvetica', 'bold');
     doc.text('Peserta yang hadir:', marginL, y);
     y += 7;
-    doc.setFont('times', 'normal');
+    doc.setFont('helvetica', 'normal');
     if (data.peserta.length === 0) {
       doc.text('-', marginL + 4, y); y += lineH;
     } else {
@@ -519,21 +520,21 @@ async function generatePDF() {
     // Q&A
     if (data.qa.length > 0) {
       checkPage(15);
-      doc.setFont('times', 'bold');
+      doc.setFont('helvetica', 'bold');
       doc.text('PERTANYAAN DAN JAWABAN:', marginL, y);
       y += 8;
       data.qa.forEach((qa, i) => {
         checkPage(20);
-        doc.setFont('times', 'bold');
+        doc.setFont('helvetica', 'bold');
         doc.text(`${i + 1}. Pertanyaan:`, marginL + 4, y); y += lineH;
-        doc.setFont('times', 'normal');
+        doc.setFont('helvetica', 'normal');
         doc.splitTextToSize(qa.pertanyaan || '-', contentW - 12).forEach(l => {
           checkPage(7); doc.text(l, marginL + 12, y); y += lineH;
         });
         y += 2;
-        doc.setFont('times', 'bold');
+        doc.setFont('helvetica', 'bold');
         doc.text('   Jawaban:', marginL + 4, y); y += lineH;
-        doc.setFont('times', 'normal');
+        doc.setFont('helvetica', 'normal');
         doc.splitTextToSize(qa.jawaban || '-', contentW - 12).forEach(l => {
           checkPage(7); doc.text(l, marginL + 12, y); y += lineH;
         });
@@ -544,7 +545,7 @@ async function generatePDF() {
     // Perubahan
     if (data.perubahan.length > 0) {
       checkPage(20);
-      doc.setFont('times', 'bold');
+      doc.setFont('helvetica', 'bold');
       doc.text('PERUBAHAN DOKUMEN:', marginL, y);
       y += 8;
 
@@ -561,7 +562,7 @@ async function generatePDF() {
         doc.rect(tX[0], y - 4, tCols.reduce((a, b) => a + b, 0), rh, bold ? 'F' : 'S');
         tX.forEach((x, i) => doc.rect(x, y - 4, tCols[i], rh, 'S'));
         cells.forEach((c, ci) => {
-          doc.setFont('times', bold ? 'bold' : 'normal');
+          doc.setFont('helvetica', bold ? 'bold' : 'normal');
           doc.splitTextToSize(c, tCols[ci] - 3).forEach((cl, li) => {
             doc.text(cl, tX[ci] + 2, y + li * lineH);
           });
@@ -576,7 +577,7 @@ async function generatePDF() {
 
   // ── Penutup ──
   checkPage(15);
-  doc.setFont('times', 'normal');
+  doc.setFont('helvetica', 'normal');
   printWrapped('Demikian Berita Acara ini dibuat dengan sebenarnya untuk dipergunakan sebagaimana mestinya.', marginL, contentW);
   y += 10;
 
@@ -588,7 +589,7 @@ async function generatePDF() {
   const lCx    = marginL + halfW / 2;
   const rCx    = marginL + halfW + halfW / 2;
 
-  doc.setFont('times', 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.text('Mengetahui,', lCx, y, { align: 'center' });
   doc.text('Yang Membuat,', rCx, y, { align: 'center' });
   y += 8;
@@ -596,18 +597,18 @@ async function generatePDF() {
   // Left: Jessica
   y += spaceH;
   doc.line(marginL + 2, y, marginL + halfW - 2, y);
-  doc.setFont('times', 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.text('Jessica Puspadayasari', lCx, y + 5, { align: 'center' });
-  doc.setFont('times', 'normal');
+  doc.setFont('helvetica', 'normal');
   doc.text('Asdep Pelaksanaan Pengadaan', lCx, y + 11, { align: 'center' });
 
   // Right: Pelaksana
   const ry = ttdY + 8 + spaceH;
   const rx  = marginL + halfW;
   doc.line(rx + 2, ry, rx + halfW - 2, ry);
-  doc.setFont('times', 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.text(data.pelaksana_nama || '...', rCx, ry + 5, { align: 'center' });
-  doc.setFont('times', 'normal');
+  doc.setFont('helvetica', 'normal');
   doc.text(data.pelaksana_jabatan || '', rCx, ry + 11, { align: 'center' });
 
   // ── Page Numbers ──
@@ -615,7 +616,7 @@ async function generatePDF() {
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
     doc.setFontSize(9);
-    doc.setFont('times', 'normal');
+    doc.setFont('helvetica', 'normal');
     doc.text(`Halaman ${i} dari ${totalPages}`, pageW / 2, pageH - 12, { align: 'center' });
   }
 
